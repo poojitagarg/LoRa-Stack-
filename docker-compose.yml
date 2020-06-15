@@ -1,0 +1,68 @@
+# file: docker-compose.yml
+version: "3.8"
+services:
+  cockroach:
+    image: 'cockroachdb/cockroach:latest'
+    command: 'start --http-port 26256 --insecure'
+    restart: 'unless-stopped'
+    volumes:
+        - './data/cockroach:/cockroach/cockroach-data'
+    ports:
+        - "127.0.0.1:26257:26257" # Cockroach
+        - "127.0.0.1:26256:26256" # WebUI
+  redis:
+    image: 'redis:latest'
+    command: 'redis-server --appendonly yes'
+    restart: 'unless-stopped'
+    volumes:
+     - './data/redis:/data'
+    ports:
+     - "127.0.0.1:6379:6379"
+  stack:
+    image: 'thethingsnetwork/lorawan-stack:latest'
+    entrypoint: 'ttn-lw-stack'
+    command: 'start all -c /config/ttn-lw-stack.yml'
+    restart: 'unless-stopped'
+    depends_on:
+     - 'cockroach'
+     - 'redis'
+   
+    ports:
+     - '80:1885'
+     - '443:8885' 
+     - '1881:1881'
+     - '8881:8881'
+     - '1882:1882'
+     - '8882:8882'
+     - '1883:1883'
+     - '8883:8883'
+     - '1884:1884'
+     - '8884:8884'
+     - '1887:1887'
+     - '8887:8887'
+     - '1700:1700/udp'
+    environment:
+        TTN_LW_BLOB_LOCAL_DIRECTORY: '/srv/ttn-lorawan/public/blob'         
+        TTN_LW_REDIS_ADDRESS: 'redis:6379'
+        TTN_LW_IS_DATABASE_URI: 'postgres://root@cockroach:26257/ttn_lorawan?sslmode=disable'  
+      
+    volumes:
+     - './data/blob:/srv/ttn-lorawan/public/blob'
+     - './config/stack:/config:ro'
+          # If using Let's Encrypt
+     - './acme:/Users/mac/Desktop/IIT Ropar internship/deployment_files/acme'
+
+
+    #If using (self) signed certificates
+    #secrets:
+    #- cert.pem
+    #- key.pem
+
+    # If using (self) signed certificates
+#secrets:
+ #   cert.pem:
+  #      file: ./cert.pem
+   # key.pem:
+    #    file: ./key.pem
+
+
