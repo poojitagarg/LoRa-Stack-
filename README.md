@@ -8,8 +8,11 @@ Docker Desktop for Mac already include Compose along with other Docker apps, so 
 ### 1. Check whether Toolbox DOCKER environment variables are set:
 
  sudo env | grep DOCKER
+ 
  DOCKER_HOST=tcp://192.168.99.100:2376
+ 
  DOCKER_MACHINE_NAME=default
+ 
  DOCKER_TLS_VERIFY=1
  DOCKER_CERT_PATH=/Users/<your_username>/.docker/machine/machines/default
  
