@@ -20,3 +20,23 @@ unset ${!DOCKER_*}
 
 Now, this command should return no output:
 sudo env | grep DOCKER 
+
+Docker Desktop does not use docker-machine to provision its VM. The Docker Engine API is exposed on a socket available to the Mac host at /var/run/docker.sock. This is the default location Docker and Docker Compose clients use to connect to the Docker daemon, so you can use docker and docker-compose CLI commands on your Mac.
+sudo chmod 666 /var/run/docker.sock
+
+## Certificates
+The Things Stack will be configured with Transport Layer Security (TLS) and HTTPS. This requires a TLS certificate and a corresponding key. Here we’ll request a free, trusted certificate from Let’s Encrypt.
+
+### Automatic Certificate Management (ACME)
+mkdir ./acme
+sudo chown 886:886 ./acme
+
+## Configuration
+we will configure The Things Stack as a private deployment on localhost. 
+
+docker-compose.yml          
+config/
+└── stack/
+    └── ttn-lw-stack.yml    
+
+
