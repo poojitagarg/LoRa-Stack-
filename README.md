@@ -49,5 +49,13 @@ config/
 └── stack/
 
     └── ttn-lw-stack.yml    
+## Running the stack
+docker compose up
+In case of error then stop all containers, delete all volumes & restart using:
 
+docker-compose down
+
+docker volume rm $(docker volume ls -f dangling=true -q)
+
+docker-compose up
 
