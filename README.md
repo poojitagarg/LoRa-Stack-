@@ -14,7 +14,9 @@ Docker Desktop for Mac already include Compose along with other Docker apps, so 
  DOCKER_MACHINE_NAME=default
  
  DOCKER_TLS_VERIFY=1
+ 
  DOCKER_CERT_PATH=/Users/<your_username>/.docker/machine/machines/default
+ 
  
 If this command returns no output, you are ready to use Docker Desktop.
 If it returns output then unset the DOCKER environment variables to make the client talk to the Docker Desktop Engine.
@@ -25,6 +27,7 @@ Now, this command should return no output:
 sudo env | grep DOCKER 
 
 Docker Desktop does not use docker-machine to provision its VM. The Docker Engine API is exposed on a socket available to the Mac host at /var/run/docker.sock. This is the default location Docker and Docker Compose clients use to connect to the Docker daemon, so you can use docker and docker-compose CLI commands on your Mac.
+
 sudo chmod 666 /var/run/docker.sock
 
 ## Certificates
@@ -32,14 +35,19 @@ The Things Stack will be configured with Transport Layer Security (TLS) and HTTP
 
 ### Automatic Certificate Management (ACME)
 mkdir ./acme
+
 sudo chown 886:886 ./acme
 
 ## Configuration
 we will configure The Things Stack as a private deployment on localhost. 
+The file structure must be as follows:
 
 docker-compose.yml          
+
 config/
+
 └── stack/
+
     └── ttn-lw-stack.yml    
 
 
